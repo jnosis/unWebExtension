@@ -152,4 +152,6 @@ export interface ContextMenusModule {
     updateProperties: UpdateProperties,
     callback?: () => void,
   ): void;
+
+  onClicked: MenuClickedEvent;
 }
