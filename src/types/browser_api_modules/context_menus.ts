@@ -153,5 +153,6 @@ export interface ContextMenusModule {
     callback?: () => void,
   ): void;
 
+  /** Fired when a context menu item is clicked. */
   onClicked: MenuClickedEvent;
 }
