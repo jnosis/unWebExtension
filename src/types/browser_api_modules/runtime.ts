@@ -84,7 +84,7 @@ export type ExtensionMessageEvent = Event<
 
 export type RuntimeEvent = Event<() => void>;
 
-export type RuntimeInstalledEvent = Event<(details: OnInstalledReason) => void>;
+export type RuntimeInstalledEvent = Event<(details: InstalledDetails) => void>;
 
 export interface RuntimeModule {
   /**
