@@ -5,5 +5,9 @@
       "singleQuote": true,
       "proseWrap": "preserve"
     }
+  },
+  "tasks": {
+    "main": "deno run ./src/main.ts",
+    "test": "deno test ./src"
   }
 }
