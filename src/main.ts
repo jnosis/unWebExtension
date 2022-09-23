@@ -1,9 +1,9 @@
 // import * as esbuild from 'esbuild';
 import { parse } from 'std/flags/mod.ts';
 
-type Platform = 'chrome' | 'firefox' | 'deno';
+export type Platform = 'chrome' | 'firefox' | 'deno';
 
-type Options = {
+export type Options = {
   'src-dir'?: string;
   'dist-dir'?: string;
   'import-map'?: string;
@@ -30,7 +30,18 @@ export class Main {
   }
 
   parse(args: string[]) {
-    this._options = { ...this._options, ...parse(args) };
+    const parsed = parse(args);
+
+    const options = JSON.parse(
+      JSON.stringify({
+        'src-dir': parsed['src-dir'],
+        'dist-dir': parsed['dist-dir'],
+        'import-map': parsed['import-map'],
+        'platform': parsed.platform,
+      }),
+    );
+
+    this._options = { ...this._options, ...options };
   }
 
   build() {
