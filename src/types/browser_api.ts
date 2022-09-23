@@ -3,7 +3,6 @@ import type { CommandsModule } from './browser_api_modules/commands.ts';
 import type { ContextMenusModule } from './browser_api_modules/context_menus.ts';
 import type { I18nModule } from './browser_api_modules/i18n.ts';
 import type { NotificationsModule } from './browser_api_modules/notifications.ts';
-import type { PlatformModule } from './browser_api_modules/platform.ts';
 import type { RuntimeModule } from './browser_api_modules/runtime.ts';
 import type { StorageModule } from './browser_api_modules/storage.ts';
 import type { TabsModule } from './browser_api_modules/tabs.ts';
@@ -15,7 +14,6 @@ export interface BrowserAPI {
   contextMenus: ContextMenusModule;
   i18n: I18nModule;
   notifications: NotificationsModule;
-  platform: PlatformModule;
   runtime: RuntimeModule;
   storage: StorageModule;
   tabs: TabsModule;

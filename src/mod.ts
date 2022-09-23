@@ -2,7 +2,7 @@ import type { BrowserAPI } from './types/browser_api.ts';
 import { isDeno, isFirefox } from 'bext/utilities/predicates.ts';
 import mockBrowser from './mock_browser/main.ts';
 
-export * from './types/browser_api.ts';
+export * as browserTypes from './types/browser_types.ts';
 export * from 'bext/utilities/predicates.ts';
 
 // deno-lint-ignore no-explicit-any
