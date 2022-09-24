@@ -1,5 +1,5 @@
 import { faker } from 'faker';
-import type { Options, Platform } from '../main.ts';
+import type { BuilderOptions, Platform } from '../builder/builder.ts';
 
 type Filter = {
   srcDirFiltered?: boolean;
@@ -10,7 +10,7 @@ type Filter = {
 
 type ArgsAndOption = {
   args: string[];
-  options: Options;
+  options: BuilderOptions;
 };
 
 export function makeArgsAndOptions(filter?: Filter): ArgsAndOption {
