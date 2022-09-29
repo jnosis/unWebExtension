@@ -1,3 +1,5 @@
 .env
 coverage/
 .vscode
+dist/
+*.zip

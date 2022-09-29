@@ -1,5 +1,6 @@
 // import * as esbuild from 'esbuild';
 import { parse } from 'std/flags/mod.ts';
+import { zip } from './zip.ts';
 
 export type Platform = 'chrome' | 'firefox' | 'deno';
 
@@ -46,6 +47,11 @@ export class Builder {
 
   build() {
     console.log(this._options);
+  }
+
+  async zip(platform: Platform) {
+    const src = `${this._options['dist-dir']!}/${platform}`;
+    await zip(src, platform);
   }
 
   get options(): BuilderOptions {
