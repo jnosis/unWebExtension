@@ -1,7 +1,11 @@
-import { assertEquals } from 'testing/asserts.ts';
+import { assert, assertEquals } from 'testing/asserts.ts';
 import { beforeEach, describe, it } from 'testing/bdd.ts';
+import * as path from 'std/path/mod.ts';
 import { Builder } from '../builder/builder.ts';
 import { makeArgsAndOptions, makeUnnecessaryArgs } from './args_utils.ts';
+
+const moduleDir = path.dirname(path.fromFileUrl(import.meta.url));
+const testdataDir = path.resolve(moduleDir, 'testdata');
 
 describe('Builder', () => {
   let builder: Builder;
@@ -13,6 +17,7 @@ describe('Builder', () => {
   describe('Set options based on argument values', () => {
     it('initializes options with default values when no arguments are present', () => {
       assertEquals(builder.options, {
+        'static-dir': 'static',
         'src-dir': './src',
         'dist-dir': './dist',
         'import-map': './import_map.json',
@@ -23,6 +28,14 @@ describe('Builder', () => {
       const { args, options } = makeArgsAndOptions();
       builder.parse(args);
 
+      assertEquals(builder.options, options);
+    });
+
+    it('sets all options except "static-dir" when only argument "static-dir" is absent', () => {
+      const { args, options } = makeArgsAndOptions({ staticDirFiltered: true });
+      builder.parse(args);
+
+      assertEquals(builder.options['static-dir'], 'static');
       assertEquals(builder.options, options);
     });
 
@@ -77,10 +90,49 @@ describe('Builder', () => {
       builder.init();
 
       assertEquals(builder.options, {
+        'static-dir': 'static',
         'src-dir': './src',
         'dist-dir': './dist',
         'import-map': './import_map.json',
       });
+    });
+  });
+
+  describe('Copy static', () => {
+    it('copy static to dist', async () => {
+      const tempDir = await Deno.makeTempDir({ prefix: 'builder_copy_test' });
+
+      const srcDir = path.join(testdataDir, 'static');
+      const destDir = path.join(tempDir, 'static');
+      const srcFile = path.join(srcDir, 'index.html');
+      const destFile = path.join(destDir, 'chrome', 'index.html');
+      const srcNestFile = path.join(srcDir, '_locales/en', 'messages.json');
+      const destNestFile = path.join(
+        destDir,
+        'chrome',
+        '_locales/en',
+        'messages.json',
+      );
+
+      builder.parse([
+        `--static-dir=${srcDir}`,
+        `--dist-dir=${destDir}`,
+      ]);
+      await builder.copyStatic('chrome');
+
+      assert(await Deno.lstat(destFile));
+      assert(await Deno.lstat(destNestFile));
+
+      assertEquals(
+        new TextDecoder().decode(await Deno.readFile(srcFile)),
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+      );
+      assertEquals(
+        new TextDecoder().decode(await Deno.readFile(srcNestFile)),
+        new TextDecoder().decode(await Deno.readFile(destNestFile)),
+      );
+
+      await Deno.remove(tempDir, { recursive: true });
     });
   });
 });

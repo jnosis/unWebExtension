@@ -2,6 +2,7 @@ import { faker } from 'faker';
 import type { BuilderOptions, Platform } from '../builder/builder.ts';
 
 type Filter = {
+  staticDirFiltered?: boolean;
   srcDirFiltered?: boolean;
   distDirFiltered?: boolean;
   importMapFiltered?: boolean;
@@ -16,6 +17,9 @@ type ArgsAndOption = {
 export function makeArgsAndOptions(filter?: Filter): ArgsAndOption {
   const options = JSON.parse(
     JSON.stringify({
+      'static-dir': filter?.staticDirFiltered
+        ? 'static'
+        : faker.system.directoryPath(),
       'src-dir': filter?.srcDirFiltered
         ? './src'
         : faker.system.directoryPath(),
@@ -29,9 +33,10 @@ export function makeArgsAndOptions(filter?: Filter): ArgsAndOption {
     }),
   );
   const args = [
-    `--src-dir=${options['src-dir']}`,
-    `--dist-dir=${options['dist-dir']}`,
-    `--import-map=${options['import-map']}`,
+    !filter?.staticDirFiltered ? `--static-dir=${options['static-dir']}` : '',
+    !filter?.srcDirFiltered ? `--src-dir=${options['src-dir']}` : '',
+    !filter?.distDirFiltered ? `--dist-dir=${options['dist-dir']}` : '',
+    !filter?.importMapFiltered ? `--import-map=${options['import-map']}` : '',
     options['platform'] ? `--platform=${options['platform']}` : '',
   ];
 
