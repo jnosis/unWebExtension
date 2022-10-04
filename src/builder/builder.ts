@@ -1,10 +1,12 @@
 // import * as esbuild from 'esbuild';
 import { parse } from 'std/flags/mod.ts';
+import { copy } from 'std/fs/mod.ts';
 import { zip } from './zip.ts';
 
 export type Platform = 'chrome' | 'firefox' | 'deno';
 
 export type BuilderOptions = {
+  'static-dir'?: string;
   'src-dir'?: string;
   'dist-dir'?: string;
   'import-map'?: string;
@@ -16,6 +18,7 @@ export class Builder {
 
   constructor() {
     this._options = {
+      'static-dir': 'static',
       'src-dir': './src',
       'dist-dir': './dist',
       'import-map': './import_map.json',
@@ -24,6 +27,7 @@ export class Builder {
 
   init() {
     this._options = {
+      'static-dir': 'static',
       'src-dir': './src',
       'dist-dir': './dist',
       'import-map': './import_map.json',
@@ -35,6 +39,7 @@ export class Builder {
 
     const options = JSON.parse(
       JSON.stringify({
+        'static-dir': parsed['static-dir'],
         'src-dir': parsed['src-dir'],
         'dist-dir': parsed['dist-dir'],
         'import-map': parsed['import-map'],
@@ -47,6 +52,15 @@ export class Builder {
 
   build() {
     console.log(this._options);
+  }
+
+  async copyStatic(platform: Platform) {
+    const options = { overwrite: true };
+    await copy(
+      this._options['static-dir']!,
+      `${this._options['dist-dir']}/${platform}`,
+      options,
+    );
   }
 
   async zip(platform: Platform) {
