@@ -8,7 +8,7 @@
   },
   "tasks": {
     "main": "deno run ./src/main.ts",
-    "test": "deno test --coverage=./coverage",
+    "test": "deno test --allow-write --allow-read --coverage=./coverage",
     "coverage": "deno coverage ./coverage"
   }
 }
