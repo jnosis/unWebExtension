@@ -1,6 +1,7 @@
 // import * as esbuild from 'esbuild';
 import { parse } from 'std/flags/mod.ts';
 import { copy } from 'std/fs/mod.ts';
+import { load } from './manifest.ts';
 import { zip } from './zip.ts';
 
 export type Platform = 'chrome' | 'firefox' | 'deno';
@@ -11,6 +12,7 @@ export type BuilderOptions = {
   'dist-dir'?: string;
   'import-map'?: string;
   'platform'?: Platform;
+  'mode'?: 'prod' | 'dev';
 };
 
 export class Builder {
@@ -22,6 +24,7 @@ export class Builder {
       'src-dir': './src',
       'dist-dir': './dist',
       'import-map': './import_map.json',
+      'mode': 'dev',
     };
   }
 
@@ -31,6 +34,7 @@ export class Builder {
       'src-dir': './src',
       'dist-dir': './dist',
       'import-map': './import_map.json',
+      'mode': 'dev',
     };
   }
 
@@ -44,6 +48,7 @@ export class Builder {
         'dist-dir': parsed['dist-dir'],
         'import-map': parsed['import-map'],
         'platform': parsed.platform,
+        'mode': parsed.mode,
       }),
     );
 
@@ -60,6 +65,15 @@ export class Builder {
       this._options['static-dir']!,
       `${this._options['dist-dir']}/${platform}`,
       options,
+    );
+  }
+
+  async loadManifest(platform: Platform) {
+    const src = `${this._options['src-dir']}/manifest.json`;
+
+    await Deno.writeTextFile(
+      `${this._options['dist-dir']}/${platform}/manifest.json`,
+      load(await Deno.readTextFile(src), this._options.mode!, platform),
     );
   }
 

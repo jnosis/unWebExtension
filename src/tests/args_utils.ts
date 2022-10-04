@@ -7,6 +7,7 @@ type Filter = {
   distDirFiltered?: boolean;
   importMapFiltered?: boolean;
   platformFiltered?: boolean;
+  modeFiltered?: boolean;
 };
 
 type ArgsAndOption = {
@@ -30,6 +31,7 @@ export function makeArgsAndOptions(filter?: Filter): ArgsAndOption {
         ? './import_map.json'
         : faker.system.directoryPath(),
       'platform': filter?.platformFiltered ? undefined : fakePlatform(),
+      'mode': filter?.modeFiltered ? 'dev' : fakeMode(),
     }),
   );
   const args = [
@@ -38,6 +40,7 @@ export function makeArgsAndOptions(filter?: Filter): ArgsAndOption {
     !filter?.distDirFiltered ? `--dist-dir=${options['dist-dir']}` : '',
     !filter?.importMapFiltered ? `--import-map=${options['import-map']}` : '',
     options['platform'] ? `--platform=${options['platform']}` : '',
+    !filter?.modeFiltered ? `--mode=${options['mode']}` : 'dev',
   ];
 
   return { args, options };
@@ -67,4 +70,10 @@ function fakePlatform(): Platform {
   const index = Math.floor(Math.random() * 3);
 
   return platforms[index];
+}
+
+function fakeMode(): 'prod' | 'dev' {
+  const index = Math.floor(Math.random() * 2);
+
+  return index ? 'prod' : 'dev';
 }

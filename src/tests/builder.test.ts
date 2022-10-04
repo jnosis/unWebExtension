@@ -21,6 +21,7 @@ describe('Builder', () => {
         'src-dir': './src',
         'dist-dir': './dist',
         'import-map': './import_map.json',
+        'mode': 'dev',
       });
     });
 
@@ -71,6 +72,14 @@ describe('Builder', () => {
       assertEquals(builder.options, options);
     });
 
+    it('Set all options except "mode" option when only argument "mode" is absent', () => {
+      const { args, options } = makeArgsAndOptions({ modeFiltered: true });
+      builder.parse(args);
+
+      assertEquals(builder.options['mode'], 'dev');
+      assertEquals(builder.options, options);
+    });
+
     it('does not set options with unnecessary arguments', () => {
       const { args, options } = makeArgsAndOptions();
       const n = Math.floor(Math.random() * 5);
@@ -94,29 +103,29 @@ describe('Builder', () => {
         'src-dir': './src',
         'dist-dir': './dist',
         'import-map': './import_map.json',
+        'mode': 'dev',
       });
     });
   });
 
   describe('Copy static', () => {
-    it('copy static to dist', async () => {
+    it('copies static to dist', async () => {
       const tempDir = await Deno.makeTempDir({ prefix: 'builder_copy_test' });
 
-      const srcDir = path.join(testdataDir, 'static');
-      const destDir = path.join(tempDir, 'static');
-      const srcFile = path.join(srcDir, 'index.html');
-      const destFile = path.join(destDir, 'chrome', 'index.html');
-      const srcNestFile = path.join(srcDir, '_locales/en', 'messages.json');
+      const staticDir = path.join(testdataDir, 'static');
+      const srcFile = path.join(staticDir, 'index.html');
+      const destFile = path.join(tempDir, 'chrome', 'index.html');
+      const srcNestFile = path.join(staticDir, '_locales/en', 'messages.json');
       const destNestFile = path.join(
-        destDir,
+        tempDir,
         'chrome',
         '_locales/en',
         'messages.json',
       );
 
       builder.parse([
-        `--static-dir=${srcDir}`,
-        `--dist-dir=${destDir}`,
+        `--static-dir=${staticDir}`,
+        `--dist-dir=${tempDir}`,
       ]);
       await builder.copyStatic('chrome');
 
@@ -131,6 +140,102 @@ describe('Builder', () => {
         new TextDecoder().decode(await Deno.readFile(srcNestFile)),
         new TextDecoder().decode(await Deno.readFile(destNestFile)),
       );
+
+      await Deno.remove(tempDir, { recursive: true });
+    });
+  });
+
+  describe('Load manifest', () => {
+    it('loads chrome manifest', async () => {
+      const tempDir = await Deno.makeTempDir({
+        prefix: 'builder_load_manifest_test',
+      });
+
+      const staticDir = path.join(testdataDir, 'static');
+      const srcDir = path.join(testdataDir, 'src');
+      const manifestFile = path.join(srcDir, 'manifest.json');
+      const destFile = path.join(tempDir, 'chrome', 'manifest.json');
+
+      builder.parse([
+        `--static-dir=${staticDir}`,
+        `--src-dir=${srcDir}`,
+        `--dist-dir=${tempDir}`,
+      ]);
+      await builder.copyStatic('chrome');
+      await builder.loadManifest('chrome');
+
+      assert(await Deno.lstat(destFile));
+
+      const raw = JSON.parse(
+        new TextDecoder().decode(await Deno.readFile(manifestFile)),
+      );
+      const loaded = JSON.parse(
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+      );
+
+      assertEquals(raw.chrome.version_name, loaded.version_name);
+
+      await Deno.remove(tempDir, { recursive: true });
+    });
+
+    it('loads firefox manifest', async () => {
+      const tempDir = await Deno.makeTempDir({
+        prefix: 'builder_load_manifest_test',
+      });
+
+      const staticDir = path.join(testdataDir, 'static');
+      const srcDir = path.join(testdataDir, 'src');
+      const manifestFile = path.join(srcDir, 'manifest.json');
+      const destFile = path.join(tempDir, 'firefox', 'manifest.json');
+
+      builder.parse([
+        `--static-dir=${staticDir}`,
+        `--src-dir=${srcDir}`,
+        `--dist-dir=${tempDir}`,
+      ]);
+      await builder.copyStatic('firefox');
+      await builder.loadManifest('firefox');
+
+      assert(await Deno.lstat(destFile));
+
+      const raw = JSON.parse(
+        new TextDecoder().decode(await Deno.readFile(manifestFile)),
+      );
+      const loaded = JSON.parse(
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+      );
+
+      assertEquals(raw.firefox.description, loaded.description);
+
+      await Deno.remove(tempDir, { recursive: true });
+    });
+
+    it('loads prod manifest', async () => {
+      const tempDir = await Deno.makeTempDir({
+        prefix: 'builder_load_manifest_test',
+      });
+
+      const staticDir = path.join(testdataDir, 'static');
+      const srcDir = path.join(testdataDir, 'src');
+      const destFile = path.join(tempDir, 'chrome', 'manifest.json');
+
+      builder.parse([
+        `--static-dir=${staticDir}`,
+        `--src-dir=${srcDir}`,
+        `--dist-dir=${tempDir}`,
+        '--mode=prod',
+      ]);
+      await builder.copyStatic('chrome');
+      await builder.loadManifest('chrome');
+
+      assert(await Deno.lstat(destFile));
+
+      const loaded = JSON.parse(
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+      );
+
+      assertEquals(loaded.options_ui.open_in_tab, undefined);
+      assertEquals(loaded.commands.dev, undefined);
 
       await Deno.remove(tempDir, { recursive: true });
     });
