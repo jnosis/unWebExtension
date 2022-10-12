@@ -6,6 +6,11 @@
       "proseWrap": "preserve"
     }
   },
+  "lint": {
+    "files": {
+      "exclude": ["src/test/testdata/"]
+    }
+  },
   "tasks": {
     "main": "deno run ./src/main.ts",
     "test": "deno test --allow-write --allow-read --coverage=./coverage",
