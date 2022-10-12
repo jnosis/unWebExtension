@@ -240,4 +240,55 @@ describe('Builder', () => {
       await Deno.remove(tempDir, { recursive: true });
     });
   });
+
+  describe('Compile background.ts', () => {
+    it('compiles dev', async () => {
+      const tempDir = await Deno.makeTempDir({ prefix: 'builder_build_test' });
+
+      const srcDir = path.join(testdataDir, 'src');
+      const importMapFile = path.join(testdataDir, 'import_map.json');
+      const destFile = path.join(tempDir, 'chrome', 'background.js');
+
+      builder.parse([
+        `--src-dir=${srcDir}`,
+        `--dist-dir=${tempDir}`,
+        `--import-map=${importMapFile}`,
+      ]);
+      await builder.compile('chrome');
+
+      assert(await Deno.lstat(destFile));
+
+      assertEquals(
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+        `// src/tests/testdata/src/background.ts\nconsole.log("logging");\nchrome.notifications.create("1", { title: "Test", message: "test" });\n`,
+      );
+
+      await Deno.remove(tempDir, { recursive: true });
+    });
+
+    it('compiles prod', async () => {
+      const tempDir = await Deno.makeTempDir({ prefix: 'builder_build_test' });
+
+      const srcDir = path.join(testdataDir, 'src');
+      const importMapFile = path.join(testdataDir, 'import_map.json');
+      const destFile = path.join(tempDir, 'chrome', 'background.js');
+
+      builder.parse([
+        `--src-dir=${srcDir}`,
+        `--dist-dir=${tempDir}`,
+        `--import-map=${importMapFile}`,
+        '--mode=prod',
+      ]);
+      await builder.compile('chrome');
+
+      assert(await Deno.lstat(destFile));
+
+      assertEquals(
+        new TextDecoder().decode(await Deno.readFile(destFile)),
+        `chrome.notifications.create("1",{title:"Test",message:"test"});\n`,
+      );
+
+      await Deno.remove(tempDir, { recursive: true });
+    });
+  });
 });

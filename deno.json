@@ -13,7 +13,7 @@
   },
   "tasks": {
     "main": "deno run ./src/main.ts",
-    "test": "deno test --allow-write --allow-read --coverage=./coverage",
+    "test": "deno test --allow-write --allow-read --allow-env --allow-run --unstable --coverage=./coverage",
     "coverage": "deno coverage ./coverage"
   }
 }

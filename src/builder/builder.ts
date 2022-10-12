@@ -1,7 +1,10 @@
-// import { esbuild } from './deps.ts';
+import { esbuild } from './deps.ts';
+import { denoPlugin } from './deps.ts';
 import { flags } from './deps.ts';
 import { fs } from './deps.ts';
+import { path } from './deps.ts';
 import { load } from './manifest.ts';
+import { webExtensionPlugin } from './plugin.ts';
 import { compress } from './zip.ts';
 
 export type Platform = 'chrome' | 'firefox' | 'deno';
@@ -75,6 +78,40 @@ export class Builder {
       `${this._options['dist-dir']}/${platform}/manifest.json`,
       load(await Deno.readTextFile(src), this._options.mode!, platform),
     );
+  }
+
+  async compile(platform: Platform, plugins: esbuild.Plugin[] = []) {
+    const importMapURL = new URL(
+      'file://' + path.resolve(this._options['import-map']!),
+    );
+
+    const background = path.relative(
+      Deno.cwd(),
+      path.join(this._options['src-dir']!, 'background.ts'),
+    );
+
+    await esbuild.build({
+      plugins: [
+        denoPlugin({ importMapURL }),
+        webExtensionPlugin(platform),
+        ...plugins,
+      ],
+      entryPoints: [background],
+      outdir: `${this._options['dist-dir']}/${platform}/`,
+      bundle: true,
+      watch: {
+        onRebuild(error) {
+          if (error) {
+            console.error(`Rebuild for ${platform} failed:`, error);
+          } else console.log(`Rebuilt for ${platform}`);
+        },
+      },
+      format: 'esm',
+      drop: this._options.mode === 'prod' ? ['console'] : undefined,
+      minify: this._options.mode === 'prod',
+    });
+
+    esbuild.stop();
   }
 
   async compress(platform: Platform) {
