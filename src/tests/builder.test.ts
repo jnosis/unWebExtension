@@ -1,6 +1,6 @@
 import { assert, assertEquals } from 'testing/asserts.ts';
 import { beforeEach, describe, it } from 'testing/bdd.ts';
-import * as path from 'std/path/mod.ts';
+import { path } from '../builder/deps.ts';
 import { Builder } from '../builder/builder.ts';
 import { makeArgsAndOptions, makeUnnecessaryArgs } from './args_utils.ts';
 

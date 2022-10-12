@@ -1,9 +1,6 @@
 {
   "imports": {
     "bext/": "https://deno.land/x/bext@v0.1.2/",
-    "std/": "https://deno.land/std@0.157.0/",
-    "esbuild": "https://deno.land/x/esbuild@v0.15.9/mod.js",
-    "zip": "https://deno.land/x/zipjs@v2.6.33/index.js",
     "testing/": "https://deno.land/std@0.157.0/testing/",
     "faker": "https://cdn.skypack.dev/@faker-js/faker@v7.5.0"
   }

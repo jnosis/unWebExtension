@@ -1,8 +1,8 @@
-// import * as esbuild from 'esbuild';
-import { parse } from 'std/flags/mod.ts';
-import { copy } from 'std/fs/mod.ts';
+// import { esbuild } from './deps.ts';
+import { flags } from './deps.ts';
+import { fs } from './deps.ts';
 import { load } from './manifest.ts';
-import { zip } from './zip.ts';
+import { compress } from './zip.ts';
 
 export type Platform = 'chrome' | 'firefox' | 'deno';
 
@@ -39,7 +39,7 @@ export class Builder {
   }
 
   parse(args: string[]) {
-    const parsed = parse(args);
+    const parsed = flags.parse(args);
 
     const options = JSON.parse(
       JSON.stringify({
@@ -61,7 +61,7 @@ export class Builder {
 
   async copyStatic(platform: Platform) {
     const options = { overwrite: true };
-    await copy(
+    await fs.copy(
       this._options['static-dir']!,
       `${this._options['dist-dir']}/${platform}`,
       options,
@@ -77,9 +77,9 @@ export class Builder {
     );
   }
 
-  async zip(platform: Platform) {
+  async compress(platform: Platform) {
     const src = `${this._options['dist-dir']!}/${platform}`;
-    await zip(src, platform);
+    await compress(src, platform);
   }
 
   get options(): BuilderOptions {
