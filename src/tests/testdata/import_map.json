@@ -1,5 +1,0 @@
-{
-  "imports": {
-    "browser": "https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/mod.ts"
-  }
-}

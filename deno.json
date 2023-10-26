@@ -1,19 +1,11 @@
 {
-  "importMap": "./import_map.json",
   "fmt": {
-    "options": {
-      "singleQuote": true,
-      "proseWrap": "preserve"
-    }
-  },
-  "lint": {
-    "files": {
-      "exclude": ["src/test/testdata/"]
-    }
+    "singleQuote": true,
+    "proseWrap": "preserve"
   },
   "tasks": {
-    "main": "deno run ./src/main.ts",
-    "test": "deno test --allow-write --allow-read --allow-env --allow-run --unstable --coverage=./coverage",
-    "coverage": "deno coverage ./coverage"
+    "main": "deno run --allow-read --allow-write ./src/main.ts",
+    "compile": "deno run --allow-read --allow-write --output=unwebext ./src/main.ts",
+    "install": "deno run --allow-read --allow-write --name=unwebext ./src/main.ts"
   }
 }
