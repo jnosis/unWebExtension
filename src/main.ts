@@ -1,5 +1,3 @@
-import { Builder } from './builder/builder.ts';
+import { command } from './command.ts';
 
-const builder = new Builder();
-builder.parse(Deno.args);
-builder.build();
+await command().parse(Deno.args);
