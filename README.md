@@ -56,7 +56,6 @@ unwebext --directory=<directory> [extensionName]
 
 ## TODO
 
-- Add ui templates
 - Update content script template
 - Add images creation
 - Upload to deno.land
