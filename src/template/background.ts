@@ -1,7 +1,12 @@
 import type { CreateOptions } from '../types.ts';
 
 export const backgroundTemplate = (options: CreateOptions) => {
-  return [BACKGROUND_SCRIPT, INDEX_TS, generateListener(options), LOAD_TS];
+  return [
+    BACKGROUND_SCRIPT,
+    INDEX_TS,
+    generateListener(options),
+    generateLoad(options),
+  ];
 };
 
 const BACKGROUND_SCRIPT = `import { Background } from './background/index';
@@ -42,7 +47,7 @@ function generateListener(options: CreateOptions) {
   const { apis, createOptions } = options;
   const createAction = apis.includes('action');
   const createCommands = apis.includes('commands');
-  const createContextMenus = options.apis.includes('contextMenus');
+  const createContextMenus = apis.includes('contextMenus');
 
   return `import type {
 ${createCommands ? '  Command,\n' : ''}${
@@ -245,4 +250,70 @@ ${
 `;
 }
 
-const LOAD_TS = ``;
+function generateLoad(options: CreateOptions) {
+  const { apis, createOptions } = options;
+  const createContextMenus = apis.includes('contextMenus');
+
+  return `import * as browser from '../api/api';${
+    createOptions
+      ? `
+import {
+  initStorage,
+  loadOption,
+  loadStorage,
+  saveStorage,
+} from '../option/option';`
+      : ''
+  }${
+    createContextMenus
+      ? `
+import * as ContextMenu from '../ui/contextMenus';`
+      : ''
+  }
+import * as Notification from '../ui/notification';
+
+export class Load {
+  constructor(details?: browser.runtime.InstalledDetails) {
+    this.onLoad(details);
+  }
+
+  private onLoad(details?: browser.runtime.InstalledDetails) {
+    const isUpdated = details?.reason === 'update';
+    ${
+    createOptions
+      ? `loadStorage('wasInit', ({ wasInit }) => {
+      console.log(\`Initialize: \${!!wasInit}\`);
+      if (wasInit) {
+        this.load(isUpdated);
+      } else {
+        initStorage(() => this.load(isUpdated));
+      }
+    });`
+      : `this.load()`
+  }
+    if (isUpdated) Notification.create();
+  }
+
+  private load(${createOptions ? 'isUpdated: boolean' : ''}) {
+    ${
+    createOptions
+      ? `loadOption((option) => {
+      console.log('load');
+      isUpdated || saveStorage({ recentTabIds: [] });${
+        createContextMenus
+          ? `
+      ContextMenu.createAll(option);`
+          : ''
+      }
+    });`
+      : `console.log('load');${
+        createContextMenus
+          ? `
+    ContextMenu.createAll()`
+          : ''
+      }`
+  }
+  }
+}
+`;
+}
