@@ -75,7 +75,7 @@ export class CreateWebExtension {
 
   async #createBackground() {
     logger.start('backgrounds');
-    const [script, index, listener, load] = backgroundTemplate();
+    const [script, index, listener, load] = backgroundTemplate(this.#options);
 
     await this.#writeTextFile('src/background.ts', script);
 
