@@ -9,6 +9,7 @@ import {
   readmeTemplate,
   staticTemplate,
   typesTemplate,
+  uiTemplate,
   webpackTemplate,
   zipTemplate,
 } from './template/index.ts';
@@ -41,6 +42,7 @@ export class CreateWebExtension {
     this.#options.createPopup && await this.#createPopUp();
 
     await this.#createStatic();
+    await this.#createUi();
     await this.#createChore();
 
     const t1 = performance.now();
@@ -119,7 +121,7 @@ export class CreateWebExtension {
       this.#options,
     );
 
-    this.#mkdir('static/_locales');
+    await this.#mkdir('static/_locales');
     await Promise.all(
       this.#options.locales.map(async (locale) => {
         await this.#mkdir(`static/_locales/${locale}`);
@@ -131,6 +133,17 @@ export class CreateWebExtension {
     );
 
     await this.#writeTextFile('static/changelog.html', changelogTemplate);
+  }
+
+  async #createUi() {
+    logger.start('UIs');
+
+    const { contextMenus, notification } = uiTemplate;
+
+    await this.#mkdir('src/ui');
+    await this.#writeTextFile('src/ui/notification.ts', notification);
+    this.#options.apis.includes('contextMenus') &&
+      await this.#writeTextFile('src/ui/contextMenus.ts', contextMenus);
   }
 
   async #createChore() {

@@ -6,5 +6,6 @@ export { packageTemplate } from './package.ts';
 export { readmeTemplate } from './readme.ts';
 export { staticTemplate } from './static.ts';
 export { typesTemplate } from './types.ts';
+export { uiTemplate } from './ui.ts';
 export { webpackTemplate } from './webpack.ts';
 export { zipTemplate } from './zip.ts';
