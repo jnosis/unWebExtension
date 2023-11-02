@@ -3,6 +3,15 @@ import { CreateWebExtension } from './create.ts';
 import { promptCreation } from './prompt.ts';
 import VERSION from './version.ts';
 
+export function command() {
+  return new Command()
+    .name('unWebExtension')
+    .description('Tool for making Web Extension.')
+    .version(VERSION)
+    .help({ types: true })
+    .command('create', create);
+}
+
 const create = new Command()
   .description('Create Web Extension project.')
   .option('-b, --create-background', 'Create with background files.')
@@ -15,12 +24,3 @@ const create = new Command()
     await new CreateWebExtension(...await promptCreation(options, args[0]))
       .create();
   });
-
-export function command() {
-  return new Command()
-    .name('unWebExtension')
-    .description('Tool for making Web Extension.')
-    .version(VERSION)
-    .help({ types: true })
-    .command('create', create);
-}
