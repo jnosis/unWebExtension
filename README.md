@@ -7,11 +7,11 @@ Tool for making WebExtension.
 ```
 # Compile executable
 deno task compile
-deno compile --allow-read --allow-write --output=unwebext ./src/main.ts
+deno compile --allow-read --allow-write -r --output=unwebext https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
 
 # Install globally
 deno task install
-deno install --allow-read --allow-write --name=unwebext ./src/main.ts
+deno install --allow-read --allow-write -r --name=unwebext https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
 ```
 
 ## Usage
@@ -22,28 +22,31 @@ unwebext -h
 unwebext --help
 
 # Creating without options.
-unwebext -b [extensionName]
-unwebext --create-background [extensionName]
+unwebext -b [extensionName:string]
+unwebext --create-background [extensionName:string]
 
 # Creating with background files.
-unwebext -b [extensionName]
-unwebext --create-background [extensionName]
+unwebext -b [extensionName:string]
+unwebext --create-background [extensionName:string]
 
 # Creating with content scripts files.
-unwebext -c [extensionName]
-unwebext --create-content-scripts [extensionName]
+unwebext -c [extensionName:string]
+unwebext --create-content-scripts [extensionName:string]
 
 # Creating with options files.
-unwebext -o [extensionName]
-unwebext --create-options [extensionName]
+unwebext -o [extensionName:string]
+unwebext --create-options [extensionName:string]
 
 # Creating with popup files.
-unwebext -p [extensionName]
-unwebext --create-popup [extensionName]
+unwebext -p [extensionName:string]
+unwebext --create-popup [extensionName:string]
 
 # Creating on custom directory. (default: './')
-unwebext -d <directory> [extensionName]
-unwebext --directory=<directory> [extensionName]
+unwebext -d <directory:file> [extensionName:string]
+unwebext --directory=<directory:file> [extensionName:string]
+
+# Run directly from github
+deno run --allow-read --allow-write -r https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
 ```
 
 ## ChangeLog
