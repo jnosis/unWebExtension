@@ -5,6 +5,7 @@ import {
   backgroundTemplate,
   configTemplate,
   contentScriptTemplate,
+  optionsTemplate,
   packageTemplate,
   readmeTemplate,
   staticTemplate,
@@ -95,13 +96,14 @@ export class CreateWebExtension {
 
   async #createOption() {
     logger.start('options');
+    const [html, script, storage, change] = optionsTemplate(this.#name);
 
-    await this.#writeTextFile('static/options.html', '');
-    await this.#writeTextFile('src/options.ts', '');
+    await this.#writeTextFile('static/options.html', html);
+    await this.#writeTextFile('src/options.ts', script);
 
     await this.#mkdir('src/option');
-    await this.#writeTextFile('src/option/option.ts', '');
-    await this.#writeTextFile('src/option/changeOption.ts', '');
+    await this.#writeTextFile('src/option/storage.ts', storage);
+    await this.#writeTextFile('src/option/changeOption.ts', change);
   }
 
   async #createPopUp() {
