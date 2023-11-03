@@ -48,6 +48,7 @@ unwebext --directory=<directory> [extensionName]
 
 ## ChangeLog
 
+- 0.1.1: Add background, options, UI template and image creation
 - 0.1.0: initial release
 
 ## Known Issues
@@ -57,7 +58,6 @@ unwebext --directory=<directory> [extensionName]
 ## TODO
 
 - Update content script template
-- Add images creation
 - Upload to deno.land
 - Add feature to add files to an existing project
 - Add automatically permissions by CreateOptions
