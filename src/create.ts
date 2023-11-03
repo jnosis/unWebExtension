@@ -5,10 +5,13 @@ import {
   backgroundTemplate,
   configTemplate,
   contentScriptTemplate,
+  imagesTemplate,
+  optionsTemplate,
   packageTemplate,
   readmeTemplate,
   staticTemplate,
   typesTemplate,
+  uiTemplate,
   webpackTemplate,
   zipTemplate,
 } from './template/index.ts';
@@ -40,7 +43,9 @@ export class CreateWebExtension {
     this.#options.createOptions && await this.#createOption();
     this.#options.createPopup && await this.#createPopUp();
 
+    await this.#createImages();
     await this.#createStatic();
+    await this.#createUi();
     await this.#createChore();
 
     const t1 = performance.now();
@@ -75,7 +80,7 @@ export class CreateWebExtension {
 
   async #createBackground() {
     logger.start('backgrounds');
-    const [script, index, listener, load] = backgroundTemplate();
+    const [script, index, listener, load] = backgroundTemplate(this.#options);
 
     await this.#writeTextFile('src/background.ts', script);
 
@@ -93,15 +98,37 @@ export class CreateWebExtension {
     await this.#writeTextFile('src/my-styles.ts', css);
   }
 
+  async #createImages() {
+    logger.start('Images');
+    const [chrome, firefox, icons] = imagesTemplate();
+
+    await this.#mkdir('image');
+    await this.#writeImageFile('image/chrome-web-store.png', chrome);
+    await this.#writeImageFile('image/get-the-addon.png', firefox);
+
+    await this.#mkdir('image/icons');
+    for (const mode in icons) {
+      await this.#mkdir(`image/icons/${mode}`);
+      const icon = icons[mode as keyof typeof icons];
+      for (const size in icon) {
+        await this.#writeImageFile(
+          `image/icons/${mode}/icon${size}.png`,
+          icon[size as keyof typeof icon],
+        );
+      }
+    }
+  }
+
   async #createOption() {
     logger.start('options');
+    const [html, script, storage, change] = optionsTemplate(this.#name);
 
-    await this.#writeTextFile('static/options.html', '');
-    await this.#writeTextFile('src/options.ts', '');
+    await this.#writeTextFile('static/options.html', html);
+    await this.#writeTextFile('src/options.ts', script);
 
     await this.#mkdir('src/option');
-    await this.#writeTextFile('src/option/option.ts', '');
-    await this.#writeTextFile('src/option/changeOption.ts', '');
+    await this.#writeTextFile('src/option/storage.ts', storage);
+    await this.#writeTextFile('src/option/changeOption.ts', change);
   }
 
   async #createPopUp() {
@@ -114,12 +141,10 @@ export class CreateWebExtension {
   async #createStatic() {
     logger.start('static');
 
-    const [localeTemplate, changelogTemplate] = staticTemplate(
-      this.#name,
-      this.#options,
-    );
+    const [localeTemplate, localeScriptTemplate, changelogTemplate] =
+      staticTemplate(this.#name, this.#options);
 
-    this.#mkdir('static/_locales');
+    await this.#mkdir('static/_locales');
     await Promise.all(
       this.#options.locales.map(async (locale) => {
         await this.#mkdir(`static/_locales/${locale}`);
@@ -130,7 +155,19 @@ export class CreateWebExtension {
       }),
     );
 
+    await this.#writeTextFile('src/locale.ts', localeScriptTemplate);
     await this.#writeTextFile('static/changelog.html', changelogTemplate);
+  }
+
+  async #createUi() {
+    logger.start('UIs');
+
+    const { contextMenus, notification } = uiTemplate;
+
+    await this.#mkdir('src/ui');
+    await this.#writeTextFile('src/ui/notification.ts', notification);
+    this.#options.apis.includes('contextMenus') &&
+      await this.#writeTextFile('src/ui/contextMenus.ts', contextMenus);
   }
 
   async #createChore() {
@@ -181,6 +218,14 @@ export class CreateWebExtension {
     const resolved = this.#resolve(path);
     await Deno.mkdir(resolved);
     logger.make(this.#root, path);
+  }
+
+  async #writeImageFile(path: string, url: string) {
+    const resolved = this.#resolve(path);
+    const response = await fetch(url);
+    const data = new Uint8Array(await response.arrayBuffer());
+    await Deno.writeFile(resolved, data);
+    logger.create(path, resolved);
   }
 
   async #writeTextFile(path: string, text: string) {

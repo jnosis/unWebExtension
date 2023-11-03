@@ -4,8 +4,8 @@
     "proseWrap": "preserve"
   },
   "tasks": {
-    "main": "deno run --allow-read --allow-write ./src/main.ts",
-    "compile": "deno run --allow-read --allow-write --output=unwebext ./src/main.ts",
-    "install": "deno run --allow-read --allow-write --name=unwebext ./src/main.ts"
+    "main": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com ./src/main.ts",
+    "compile": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --output=unwebext ./src/main.ts",
+    "install": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts"
   }
 }
