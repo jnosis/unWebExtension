@@ -5,6 +5,7 @@ import {
   backgroundTemplate,
   configTemplate,
   contentScriptTemplate,
+  imagesTemplate,
   packageTemplate,
   readmeTemplate,
   staticTemplate,
@@ -40,6 +41,7 @@ export class CreateWebExtension {
     this.#options.createOptions && await this.#createOption();
     this.#options.createPopup && await this.#createPopUp();
 
+    await this.#createImages();
     await this.#createStatic();
     await this.#createChore();
 
@@ -91,6 +93,27 @@ export class CreateWebExtension {
 
     await this.#writeTextFile('src/content-script.ts', script);
     await this.#writeTextFile('src/my-styles.ts', css);
+  }
+
+  async #createImages() {
+    logger.start('Images');
+    const [chrome, firefox, icons] = imagesTemplate();
+
+    await this.#mkdir('image');
+    await this.#writeImageFile('image/chrome-web-store.png', chrome);
+    await this.#writeImageFile('image/get-the-addon.png', firefox);
+
+    await this.#mkdir('image/icons');
+    for (const mode in icons) {
+      await this.#mkdir(`image/icons/${mode}`);
+      const icon = icons[mode as keyof typeof icons];
+      for (const size in icon) {
+        await this.#writeImageFile(
+          `image/icons/${mode}/icon${size}.png`,
+          icon[size as keyof typeof icon],
+        );
+      }
+    }
   }
 
   async #createOption() {
@@ -181,6 +204,14 @@ export class CreateWebExtension {
     const resolved = this.#resolve(path);
     await Deno.mkdir(resolved);
     logger.make(this.#root, path);
+  }
+
+  async #writeImageFile(path: string, url: string) {
+    const resolved = this.#resolve(path);
+    const response = await fetch(url);
+    const data = new Uint8Array(await response.arrayBuffer());
+    await Deno.writeFile(resolved, data);
+    logger.create(path, resolved);
   }
 
   async #writeTextFile(path: string, text: string) {
