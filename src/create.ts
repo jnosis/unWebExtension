@@ -6,10 +6,12 @@ import {
   configTemplate,
   contentScriptTemplate,
   imagesTemplate,
+  optionsTemplate,
   packageTemplate,
   readmeTemplate,
   staticTemplate,
   typesTemplate,
+  uiTemplate,
   webpackTemplate,
   zipTemplate,
 } from './template/index.ts';
@@ -43,6 +45,7 @@ export class CreateWebExtension {
 
     await this.#createImages();
     await this.#createStatic();
+    await this.#createUi();
     await this.#createChore();
 
     const t1 = performance.now();
@@ -77,7 +80,7 @@ export class CreateWebExtension {
 
   async #createBackground() {
     logger.start('backgrounds');
-    const [script, index, listener, load] = backgroundTemplate();
+    const [script, index, listener, load] = backgroundTemplate(this.#options);
 
     await this.#writeTextFile('src/background.ts', script);
 
@@ -118,13 +121,14 @@ export class CreateWebExtension {
 
   async #createOption() {
     logger.start('options');
+    const [html, script, storage, change] = optionsTemplate(this.#name);
 
-    await this.#writeTextFile('static/options.html', '');
-    await this.#writeTextFile('src/options.ts', '');
+    await this.#writeTextFile('static/options.html', html);
+    await this.#writeTextFile('src/options.ts', script);
 
     await this.#mkdir('src/option');
-    await this.#writeTextFile('src/option/option.ts', '');
-    await this.#writeTextFile('src/option/changeOption.ts', '');
+    await this.#writeTextFile('src/option/storage.ts', storage);
+    await this.#writeTextFile('src/option/changeOption.ts', change);
   }
 
   async #createPopUp() {
@@ -137,12 +141,10 @@ export class CreateWebExtension {
   async #createStatic() {
     logger.start('static');
 
-    const [localeTemplate, changelogTemplate] = staticTemplate(
-      this.#name,
-      this.#options,
-    );
+    const [localeTemplate, localeScriptTemplate, changelogTemplate] =
+      staticTemplate(this.#name, this.#options);
 
-    this.#mkdir('static/_locales');
+    await this.#mkdir('static/_locales');
     await Promise.all(
       this.#options.locales.map(async (locale) => {
         await this.#mkdir(`static/_locales/${locale}`);
@@ -153,7 +155,19 @@ export class CreateWebExtension {
       }),
     );
 
+    await this.#writeTextFile('src/locale.ts', localeScriptTemplate);
     await this.#writeTextFile('static/changelog.html', changelogTemplate);
+  }
+
+  async #createUi() {
+    logger.start('UIs');
+
+    const { contextMenus, notification } = uiTemplate;
+
+    await this.#mkdir('src/ui');
+    await this.#writeTextFile('src/ui/notification.ts', notification);
+    this.#options.apis.includes('contextMenus') &&
+      await this.#writeTextFile('src/ui/contextMenus.ts', contextMenus);
   }
 
   async #createChore() {

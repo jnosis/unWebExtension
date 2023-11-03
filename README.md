@@ -56,9 +56,10 @@ unwebext --directory=<directory> [extensionName]
 
 ## TODO
 
-- Update background and content script template
+- Update content script template
 - Add images creation
 - Upload to deno.land
+- Add feature to add files to an existing project
 - Add automatically permissions by CreateOptions
 - Support side panel
 - Support custom source directory
