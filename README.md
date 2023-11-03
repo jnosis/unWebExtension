@@ -7,11 +7,11 @@ Tool for making WebExtension.
 ```
 # Compile executable
 deno task compile
-deno compile --allow-read --allow-write --output=unwebext ./src/main.ts
+deno compile --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --output=unwebext ./src/main.ts
 
 # Install globally
 deno task install
-deno install --allow-read --allow-write --name=unwebext ./src/main.ts
+deno install --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts
 ```
 
 ## Usage
