@@ -21,32 +21,40 @@ deno install --allow-read --allow-write --allow-net=storage.googleapis.com,blog.
 unwebext -h
 unwebext --help
 
+# Run directly from github.
+deno run --allow-read --allow-write -r https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts [YOUR COMMAND AND OPTIONS]
+```
+
+Create project:
+
+```
+# Showing help.
+unwebext create -h
+unwebext create --help
+
 # Creating without options.
-unwebext -b [extensionName:string]
-unwebext --create-background [extensionName:string]
+unwebext create -b [extensionName:string]
+unwebext create --create-background [extensionName:string]
 
 # Creating with background files.
-unwebext -b [extensionName:string]
-unwebext --create-background [extensionName:string]
+unwebext create -b [extensionName:string]
+unwebext create --create-background [extensionName:string]
 
 # Creating with content scripts files.
-unwebext -c [extensionName:string]
-unwebext --create-content-scripts [extensionName:string]
+unwebext create -c [extensionName:string]
+unwebext create --create-content-scripts [extensionName:string]
 
 # Creating with options files.
-unwebext -o [extensionName:string]
-unwebext --create-options [extensionName:string]
+unwebext create -o [extensionName:string]
+unwebext create --create-options [extensionName:string]
 
 # Creating with popup files.
-unwebext -p [extensionName:string]
-unwebext --create-popup [extensionName:string]
+unwebext create -p [extensionName:string]
+unwebext create --create-popup [extensionName:string]
 
 # Creating on custom directory. (default: './')
-unwebext -d <directory:file> [extensionName:string]
-unwebext --directory=<directory:file> [extensionName:string]
-
-# Run directly from github
-deno run --allow-read --allow-write -r https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
+unwebext create -d <directory:file> [extensionName:string]
+unwebext create --directory=<directory:file> [extensionName:string]
 ```
 
 ## ChangeLog
