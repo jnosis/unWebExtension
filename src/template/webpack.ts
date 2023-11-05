@@ -1,6 +1,6 @@
 import type { CreateOptions } from '../types.ts';
 
-export const webpackTemplate = (options: CreateOptions) => {
+export const webpack = (options: CreateOptions) => {
   return [
     CONFIG,
     generateCommon(options),

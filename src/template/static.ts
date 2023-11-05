@@ -1,6 +1,6 @@
 import type { CreateOptions } from '../types.ts';
 
-export const staticTemplate = (name: string, options: CreateOptions) => {
+export const statics = (name: string, options: CreateOptions) => {
   return [
     generateLocale(name, options),
     LOCALE_SCRIPT,

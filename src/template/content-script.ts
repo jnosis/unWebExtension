@@ -1,4 +1,4 @@
-export const contentScriptTemplate = () => {
+export const contentScript = () => {
   return [CONTENT_SCRIPT, MY_STYLES];
 };
 

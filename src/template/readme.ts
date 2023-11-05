@@ -1,4 +1,4 @@
-export const readmeTemplate = (name: string) => {
+export const readme = (name: string) => {
   return README.replace('{name}', name);
 };
 

@@ -1,6 +1,6 @@
 import type { CreateOptions } from '../types.ts';
 
-export const backgroundTemplate = (options: CreateOptions) => {
+export const background = (options: CreateOptions) => {
   return [
     BACKGROUND_SCRIPT,
     INDEX_TS,

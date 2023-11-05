@@ -1,4 +1,4 @@
-export const zipTemplate = (name: string) => {
+export const zip = (name: string) => {
   return ZIP_SCRIPT.replaceAll('{name}', name);
 };
 

@@ -1,20 +1,6 @@
 import type { CreateOptions } from './types.ts';
 import { basename, resolve } from './deps.ts';
-import {
-  apiTemplate,
-  backgroundTemplate,
-  configTemplate,
-  contentScriptTemplate,
-  imagesTemplate,
-  optionsTemplate,
-  packageTemplate,
-  readmeTemplate,
-  staticTemplate,
-  typesTemplate,
-  uiTemplate,
-  webpackTemplate,
-  zipTemplate,
-} from './template/index.ts';
+import * as template from './template/index.ts';
 import logger from './util/logger.ts';
 
 export class CreateWebExtension {
@@ -54,7 +40,7 @@ export class CreateWebExtension {
 
   async #createTypes() {
     logger.start('types');
-    const types = typesTemplate(this.#options);
+    const types = template.types(this.#options);
 
     await this.#writeTextFile('src/types.ts', types);
   }
@@ -62,7 +48,7 @@ export class CreateWebExtension {
   async #createAPIs() {
     logger.start('APIs');
 
-    const [platformText, apiText, indexText, manifestText] = apiTemplate(
+    const [platformText, apiText, indexText, manifestText] = template.api(
       this.#options,
     );
 
@@ -80,7 +66,7 @@ export class CreateWebExtension {
 
   async #createBackground() {
     logger.start('backgrounds');
-    const [script, index, listener, load] = backgroundTemplate(this.#options);
+    const [script, index, listener, load] = template.background(this.#options);
 
     await this.#writeTextFile('src/background.ts', script);
 
@@ -92,7 +78,7 @@ export class CreateWebExtension {
 
   async #createContentScripts() {
     logger.start('Content Scripts');
-    const [script, css] = contentScriptTemplate();
+    const [script, css] = template.contentScript();
 
     await this.#writeTextFile('src/content-script.ts', script);
     await this.#writeTextFile('src/my-styles.ts', css);
@@ -100,7 +86,7 @@ export class CreateWebExtension {
 
   async #createImages() {
     logger.start('Images');
-    const [chrome, firefox, icons] = imagesTemplate();
+    const [chrome, firefox, icons] = template.images();
 
     await this.#mkdir('image');
     await this.#writeImageFile('image/chrome-web-store.png', chrome);
@@ -121,7 +107,7 @@ export class CreateWebExtension {
 
   async #createOption() {
     logger.start('options');
-    const [html, script, storage, change] = optionsTemplate(this.#name);
+    const [html, script, storage, change] = template.options(this.#name);
 
     await this.#writeTextFile('static/options.html', html);
     await this.#writeTextFile('src/options.ts', script);
@@ -141,8 +127,8 @@ export class CreateWebExtension {
   async #createStatic() {
     logger.start('static');
 
-    const [localeTemplate, localeScriptTemplate, changelogTemplate] =
-      staticTemplate(this.#name, this.#options);
+    const [localeTemplate, localeScriptTemplate, changelogTemplate] = template
+      .statics(this.#name, this.#options);
 
     await this.#mkdir('static/_locales');
     await Promise.all(
@@ -162,7 +148,7 @@ export class CreateWebExtension {
   async #createUi() {
     logger.start('UIs');
 
-    const { contextMenus, notification } = uiTemplate;
+    const { contextMenus, notification } = template.ui;
 
     await this.#mkdir('src/ui');
     await this.#writeTextFile('src/ui/notification.ts', notification);
@@ -173,17 +159,17 @@ export class CreateWebExtension {
   async #createChore() {
     logger.start('chores');
 
-    const [packageJson, pnpmLock] = packageTemplate(name);
+    const [packageJson, pnpmLock] = template.packages(name);
 
     await this.#writeTextFile('package.json', packageJson);
     await this.#writeTextFile('pnpm-lock.yaml', pnpmLock);
 
-    const [gitignore, tsconfig] = configTemplate();
+    const [gitignore, tsconfig] = template.config();
 
     await this.#writeTextFile('.gitignore', gitignore);
     await this.#writeTextFile('tsconfig.json', tsconfig);
 
-    const readme = readmeTemplate(name);
+    const readme = template.readme(name);
 
     await this.#writeTextFile('readme.md', readme);
 
@@ -195,7 +181,7 @@ export class CreateWebExtension {
       apiLoader,
       devCodeDisabler,
       manifestLoader,
-    ] = webpackTemplate(this.#options);
+    ] = template.webpack(this.#options);
 
     await this.#writeTextFile('webpack.config.js', webpackConfig);
     await this.#mkdir('webpack');
@@ -209,7 +195,7 @@ export class CreateWebExtension {
     );
     await this.#writeTextFile('webpack/manifest-loader.js', manifestLoader);
 
-    const zipScript = zipTemplate(name);
+    const zipScript = template.zip(name);
 
     await this.#writeTextFile('zip.js', zipScript);
   }

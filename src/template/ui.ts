@@ -32,7 +32,7 @@ export async function create() {
 }
 `;
 
-export const uiTemplate = {
+export const ui = {
   contextMenus: CONTEXT_MENUS,
   notification: NOTIFICATION,
 };

@@ -1,5 +1,5 @@
 import type { CreateOptions } from '../types.ts';
 
-export const typesTemplate = (_options: CreateOptions) => {
+export const types = (_options: CreateOptions) => {
   return '';
 };

@@ -1,5 +1,5 @@
 /* cSpell:disable */
-export const packageTemplate = (name: string) => {
+export const packages = (name: string) => {
   return [PACKAGE_JSON.replace('{name}', name), PNPM_LOCK];
 };
 

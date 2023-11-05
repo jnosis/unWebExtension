@@ -1,6 +1,6 @@
 import type { API, CreateOptions } from '../types.ts';
 
-export const apiTemplate = (options: CreateOptions) => {
+export const api = (options: CreateOptions) => {
   return [
     PLATFORM_TS,
     API_TS,

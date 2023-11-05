@@ -1,4 +1,4 @@
-export const optionsTemplate = (name: string) => {
+export const options = (name: string) => {
   return [
     generateOptionsHtml(name),
     OPTIONS_SCRIPT,

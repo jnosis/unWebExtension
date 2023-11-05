@@ -1,4 +1,4 @@
-export const imagesTemplate = (): [string, string, Icons] => {
+export const images = (): [string, string, Icons] => {
   return [CHROME_WEB_STORE, GET_THE_ADDON, ICONS];
 };
 
