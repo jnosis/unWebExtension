@@ -1,6 +1,6 @@
 /* cSpell:disable */
 export const packages = (name: string) => {
-  return [PACKAGE_JSON.replace('{name}', name), PNPM_LOCK];
+  return [PACKAGE_JSON.replace('{name}', name.toLowerCase()), PNPM_LOCK];
 };
 
 const PACKAGE_JSON = `{

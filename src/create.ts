@@ -159,7 +159,7 @@ export class CreateWebExtension {
   async #createChore() {
     logger.start('chores');
 
-    const [packageJson, pnpmLock] = template.packages(name);
+    const [packageJson, pnpmLock] = template.packages(this.#name);
 
     await this.#writeTextFile('package.json', packageJson);
     await this.#writeTextFile('pnpm-lock.yaml', pnpmLock);
@@ -169,7 +169,7 @@ export class CreateWebExtension {
     await this.#writeTextFile('.gitignore', gitignore);
     await this.#writeTextFile('tsconfig.json', tsconfig);
 
-    const readme = template.readme(name);
+    const readme = template.readme(this.#name);
 
     await this.#writeTextFile('readme.md', readme);
 
@@ -195,7 +195,7 @@ export class CreateWebExtension {
     );
     await this.#writeTextFile('webpack/manifest-loader.js', manifestLoader);
 
-    const zipScript = template.zip(name);
+    const zipScript = template.zip(this.#name);
 
     await this.#writeTextFile('zip.js', zipScript);
   }
