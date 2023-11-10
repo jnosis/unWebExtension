@@ -64,7 +64,7 @@ unwebext create --directory=<directory:file> [extensionName:string]
 
 ## Known Issues
 
--
+- Missing changelog.ts
 
 ## TODO
 
