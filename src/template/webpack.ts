@@ -239,7 +239,7 @@ const MANIFEST_LOADER =
   }
 
   const { commands, ...rest } = manifest;
-  if (mode) {
+  if (mode && commands) {
     console.log('load production manifest...');
     const { dev: _dev, ...prod } = commands;
     manifest = { ...rest, commands: prod };
