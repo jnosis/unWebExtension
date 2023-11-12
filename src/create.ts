@@ -135,7 +135,7 @@ export class CreateWebExtension {
       this.#options.locales.map(async (locale) => {
         await this.#mkdir(`static/_locales/${locale}`);
         await this.#writeTextFile(
-          `static/_locales/${locale}/message.json`,
+          `static/_locales/${locale}/messages.json`,
           localeTemplate,
         );
       }),
