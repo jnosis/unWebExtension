@@ -2,16 +2,11 @@ export const readme = (name: string) => {
   return README.replace('{name}', name);
 };
 
-const README =
-  `<h1 align="center"><img align="center" src="./image/icons/prod/icon32.png" alt="icon"> {name}</h1></p>
+const README = `# ![icon](./image/icons/prod/icon32.png) {name}
 
-<p align="center">
 {description}
-</p>
-<p align="center">
-<a href=""><img src="./image/chrome-web-store.png" alt="Chrome Web Store"></a>
-<a href=""><img src="./image/get-the-addon.png" alt="Get the Firefox Add-on"></a>
-</p><hr>
+
+# [![Chrome Web Store](./image/chrome-web-store.png)]() [![Get the Firefox Add-on](./image/get-the-addon.png)]()
 
 <span style="font-size:0.75em"> _Read this in other languages: [English](README.md), [한국어](README.ko.md)._</span>
 
