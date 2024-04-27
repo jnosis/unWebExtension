@@ -7,11 +7,11 @@ Tool for making WebExtension.
 ```
 # Compile executable
 deno task compile
-deno compile --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --output=unwebext https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
+deno compile --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --output=unwebext jsr:@unface/unwebext
 
 # Install globally
 deno task install
-deno install --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --name=unwebext https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts
+deno install --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --name=unwebext jsr:@unface/unwebext
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ unwebext -h
 unwebext --help
 
 # Run directly from github.
-deno run --allow-read --allow-write -r https://raw.githubusercontent.com/jnosis/unWebExtension/master/src/main.ts [YOUR COMMAND AND OPTIONS]
+deno run --allow-read --allow-write -r jsr:@unface/unwebext [YOUR COMMAND AND OPTIONS]
 ```
 
 Create project:
@@ -59,6 +59,7 @@ unwebext create --directory=<directory:file> [extensionName:string]
 
 ## ChangeLog
 
+- 1.0.0: Publish to [jsr.io](https://jsr.io/@unface/unwebext)
 - 0.1.1: Add background, options, UI template and image creation
 - 0.1.0: initial release
 
@@ -69,7 +70,6 @@ unwebext create --directory=<directory:file> [extensionName:string]
 ## TODO
 
 - Update content script template
-- Upload to deno.land
 - Add feature to add files to an existing project
 - Add automatically permissions by CreateOptions
 - Support side panel

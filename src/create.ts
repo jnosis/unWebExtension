@@ -1,5 +1,5 @@
 import type { CreateOptions } from './types.ts';
-import { basename, resolve } from './deps.ts';
+import { basename, resolve } from '@std/path';
 import * as template from './template/index.ts';
 import logger from './util/logger.ts';
 
