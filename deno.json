@@ -8,5 +8,11 @@
     "create": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com ./src/main.ts create",
     "compile": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --output=unwebext ./src/main.ts",
     "install": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts"
+  },
+  "imports": {
+    "@cliffy/ansi": "jsr:@cliffy/ansi@1.0.0-rc.4",
+    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.4",
+    "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.4",
+    "@std/path": "jsr:@std/path@0.221.0"
   }
 }
