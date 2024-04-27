@@ -1,4 +1,4 @@
-import { colors } from '../deps.ts';
+import { colors } from '@cliffy/ansi';
 import VERSION from '../version.ts';
 
 const bold = colors.bold;

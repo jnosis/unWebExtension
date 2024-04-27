@@ -1,4 +1,4 @@
-import { Command } from './deps.ts';
+import { Command } from '@cliffy/command';
 import { CreateWebExtension } from './create.ts';
 import { promptCreation } from './prompt.ts';
 import VERSION from './version.ts';

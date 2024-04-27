@@ -1,6 +1,6 @@
-import type { CheckboxOption } from './deps.ts';
+import type { CheckboxOption } from '@cliffy/prompt';
 import type { API, CreateOptions, Locale, Permission } from './types.ts';
-import { Checkbox, Confirm, Input } from './deps.ts';
+import { Checkbox, Confirm, Input } from '@cliffy/prompt';
 
 type PromptOptions = Partial<
   Omit<CreateOptions, 'apis' | 'permissions' | 'locales'>
