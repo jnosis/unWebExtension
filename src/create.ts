@@ -127,7 +127,12 @@ export class CreateWebExtension {
   async #createStatic() {
     logger.start('static');
 
-    const [localeTemplate, localeScriptTemplate, changelogTemplate] = template
+    const [
+      localeTemplate,
+      localeScriptTemplate,
+      changelogScriptTemplate,
+      changelogTemplate,
+    ] = template
       .statics(this.#name, this.#options);
 
     await this.#mkdir('static/_locales');
@@ -142,6 +147,7 @@ export class CreateWebExtension {
     );
 
     await this.#writeTextFile('src/locale.ts', localeScriptTemplate);
+    await this.#writeTextFile('src/changelog.ts', changelogScriptTemplate);
     await this.#writeTextFile('static/changelog.html', changelogTemplate);
   }
 

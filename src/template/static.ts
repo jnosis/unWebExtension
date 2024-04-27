@@ -4,6 +4,7 @@ export const statics = (name: string, options: CreateOptions) => {
   return [
     generateLocale(name, options),
     LOCALE_SCRIPT,
+    CHANGELOG_SCRIPT,
     CHANGELOG.replaceAll('{name}', name),
   ];
 };
@@ -72,6 +73,19 @@ export default function localizeHtmlPage() {
       }
     }
   }
+}
+`;
+
+const CHANGELOG_SCRIPT = `import * as browser from './api/api';
+import localizeHtmlPage from './locale';
+
+const version = document.querySelector('#version') as HTMLLabelElement;
+version.textContent = \`v \${getVersion()}\`;
+localizeHtmlPage();
+
+function getVersion(): string {
+  const v = browser.runtime.getManifest().version;
+  return v;
 }
 `;
 
