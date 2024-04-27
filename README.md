@@ -1,5 +1,7 @@
 # unWebExtension
 
+[![JSR](https://jsr.io/badges/@unface/unwebext)](https://jsr.io/@unface/unwebext) [![JSR Score](https://jsr.io/badges/@unface/unwebext/score)](https://jsr.io/@unface/unwebext/score)
+
 Tool for making WebExtension.
 
 ## Installation
