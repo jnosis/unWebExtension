@@ -1,7 +1,7 @@
 {
   "name": "@unface/unwebext",
   "version": "1.0.0",
-  "exports": "./main.ts",
+  "exports": "./src/main.ts",
   "fmt": {
     "singleQuote": true,
     "proseWrap": "preserve"
