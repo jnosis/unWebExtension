@@ -61,13 +61,14 @@ unwebext create --directory=<directory:file> [extensionName:string]
 
 ## ChangeLog
 
+- 1.0.1: Add changelog.ts template
 - 1.0.0: Publish to [jsr.io](https://jsr.io/@unface/unwebext)
 - 0.1.1: Add background, options, UI template and image creation
 - 0.1.0: initial release
 
 ## Known Issues
 
-- Missing changelog.ts
+-
 
 ## TODO
 
