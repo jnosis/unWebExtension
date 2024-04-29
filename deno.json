@@ -7,10 +7,10 @@
     "proseWrap": "preserve"
   },
   "tasks": {
-    "main": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com ./src/main.ts",
+    "main": "deno run --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com ./src/main.ts",
     "create": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com ./src/main.ts create",
-    "compile": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --output=unwebext ./src/main.ts",
-    "install": "deno run --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts"
+    "compile": "deno run --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --output=unwebext ./src/main.ts",
+    "install": "deno run --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts"
   },
   "imports": {
     "@cliffy/ansi": "jsr:@cliffy/ansi@1.0.0-rc.4",

@@ -1,6 +1,7 @@
 import { Command } from '@cliffy/command';
 import { CreateWebExtension } from './create.ts';
 import { promptCreation } from './prompt.ts';
+import { printListVersions, upgradeTo, versionType } from './upgrade.ts';
 import VERSION from './version.ts';
 
 export function command() {
@@ -9,7 +10,8 @@ export function command() {
     .description('Tool for making Web Extension.')
     .version(VERSION)
     .help({ types: true })
-    .command('create', create);
+    .command('create', create)
+    .command('upgrade', upgrade);
 }
 
 const create = new Command()
@@ -24,3 +26,29 @@ const create = new Command()
     await new CreateWebExtension(...await promptCreation(options, args[0]))
       .create();
   });
+
+const upgrade = new Command()
+  .type('version', versionType)
+  .description('Upgrade unWebExtension.')
+  .option(
+    '-l, --list-versions',
+    'Show available versions.',
+    {
+      action: printListVersions,
+    },
+  )
+  .option(
+    '-v, --version <version:version>',
+    'The version to upgrade to.',
+    { default: 'latest' },
+  )
+  .option(
+    '-n --name <name:string>',
+    'Executable file name',
+    { default: 'unwebext' },
+  )
+  .option(
+    '-f, --force',
+    'Replace current installation even if not out-of-date.',
+  )
+  .action(upgradeTo);

@@ -9,11 +9,11 @@ Tool for making WebExtension.
 ```
 # Compile executable
 deno task compile
-deno compile --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --output=unwebext jsr:@unface/unwebext
+deno compile --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --output=unwebext jsr:@unface/unwebext
 
 # Install globally
 deno task install
-deno install --allow-read --allow-write --allow-net=storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --name=unwebext jsr:@unface/unwebext
+deno install --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com -r --name=unwebext jsr:@unface/unwebext
 ```
 
 ## Usage
@@ -57,6 +57,33 @@ unwebext create --create-popup [extensionName:string]
 # Creating on custom directory. (default: './')
 unwebext create -d <directory:file> [extensionName:string]
 unwebext create --directory=<directory:file> [extensionName:string]
+```
+
+Upgrade unWebExtension:
+
+```
+# Showing help.
+unwebext upgrade -h
+unwebext upgrade --help
+
+# Showing available versions.
+unwebext upgrade -l
+unwebext upgrade -list-versions
+
+# Upgrading without options.
+unwebext upgrade
+
+# Upgrading to specified version. (default: 'latest')
+unwebext upgrade -v <version:version>
+unwebext upgrade --version <version:version>
+
+# Upgrading with setting name. (default: 'unwebext')
+unwebext upgrade -n <name:string>
+unwebext upgrade --name <name:string>
+
+# Upgrading even if not out-of-date
+unwebext upgrade -f
+unwebext upgrade --force
 ```
 
 ## ChangeLog
