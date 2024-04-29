@@ -23,7 +23,7 @@ deno install --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.co
 unwebext -h
 unwebext --help
 
-# Run directly from github.
+# Run directly from jsr.
 deno run --allow-read --allow-write -r jsr:@unface/unwebext [YOUR COMMAND AND OPTIONS]
 ```
 
