@@ -35,8 +35,7 @@ unwebext create -h
 unwebext create --help
 
 # Creating without options.
-unwebext create -b [extensionName:string]
-unwebext create --create-background [extensionName:string]
+unwebext create
 
 # Creating with background files.
 unwebext create -b [extensionName:string]
