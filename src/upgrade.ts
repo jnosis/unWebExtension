@@ -29,6 +29,7 @@ type PackageMetadata = {
 
 type UpgradeArgs = {
   version?: Semver | 'latest';
+  name: string;
   force?: boolean;
 };
 
@@ -79,7 +80,7 @@ export async function printListVersions() {
   Deno.exit(0);
 }
 
-export async function upgradeTo({ version: to, force }: UpgradeArgs) {
+export async function upgradeTo({ version: to, name, force }: UpgradeArgs) {
   if (force || !to || await isOutdated(VERSION, to)) {
     if (to === 'latest') {
       const { latest } = await getVersions();
@@ -95,7 +96,7 @@ export async function upgradeTo({ version: to, force }: UpgradeArgs) {
       '--allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com',
       '-r',
       '--name',
-      'unwebext',
+      name,
       registry,
     ];
 
@@ -111,12 +112,12 @@ export async function upgradeTo({ version: to, force }: UpgradeArgs) {
     if (!success) {
       await Deno.stderr.write(stderr);
       throw new Error(
-        `Failed to upgrade unwebext from ${from} to version ${to}!`,
+        `Failed to upgrade ${name} from ${from} to version ${to}!`,
       );
     }
 
     console.info(
-      `Successfully upgraded unwebext from ${from} to version ${to}! (jsr:@unface/unwebext@${to})`,
+      `Successfully upgraded ${name} from ${from} to version ${to}! (jsr:@unface/unwebext@${to})`,
     );
   }
 }

@@ -38,9 +38,14 @@ const upgrade = new Command()
     },
   )
   .option(
-    '--version <version:version>',
+    '-v, --version <version:version>',
     'The version to upgrade to.',
     { default: 'latest' },
+  )
+  .option(
+    '-n --name <name:string>',
+    'Executable file name',
+    { default: 'unwebext' },
   )
   .option(
     '-f, --force',
