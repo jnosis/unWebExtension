@@ -59,6 +59,33 @@ unwebext create -d <directory:file> [extensionName:string]
 unwebext create --directory=<directory:file> [extensionName:string]
 ```
 
+Upgrade unWebExtension:
+
+```
+# Showing help.
+unwebext upgrade -h
+unwebext upgrade --help
+
+# Showing available versions.
+unwebext upgrade -l
+unwebext upgrade -list-versions
+
+# Upgrading without options.
+unwebext upgrade
+
+# Upgrading to specified version. (default: 'latest')
+unwebext upgrade -v <version:version>
+unwebext upgrade --version <version:version>
+
+# Upgrading with setting name. (default: 'unwebext')
+unwebext upgrade -n <name:string>
+unwebext upgrade --name <name:string>
+
+# Upgrading even if not out-of-date
+unwebext upgrade -f
+unwebext upgrade --force
+```
+
 ## ChangeLog
 
 - 1.0.1: Add changelog.ts template
