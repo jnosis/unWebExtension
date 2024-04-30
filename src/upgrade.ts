@@ -90,6 +90,7 @@ export async function upgradeTo({ version: to, name, force }: UpgradeArgs) {
 
     const cmdArgs = [
       'install',
+      '-g',
       '--force',
       '--allow-read',
       '--allow-write',
