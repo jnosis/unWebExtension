@@ -1,7 +1,9 @@
 import { Command } from '@cliffy/command';
+import { UpgradeCommand } from '@cliffy/command/upgrade';
+import { JsrProvider } from '@cliffy/command/upgrade/provider/jsr';
 import { CreateWebExtension } from './create.ts';
 import { promptCreation } from './prompt.ts';
-import { printListVersions, upgradeTo, versionType } from './upgrade.ts';
+import { getDenoArgs } from './upgrade.ts';
 import VERSION from './version.ts';
 
 export function command() {
@@ -11,7 +13,17 @@ export function command() {
     .version(VERSION)
     .help({ types: true })
     .command('create', create)
-    .command('upgrade', upgrade);
+    .command(
+      'upgrade',
+      new UpgradeCommand({
+        provider: new JsrProvider({ package: '@unface/unwebext' }),
+        runtime: {
+          deno: {
+            args: getDenoArgs(),
+          },
+        },
+      }),
+    );
 }
 
 const create = new Command()
@@ -26,29 +38,3 @@ const create = new Command()
     await new CreateWebExtension(...await promptCreation(options, args[0]))
       .create();
   });
-
-const upgrade = new Command()
-  .type('version', versionType)
-  .description('Upgrade unWebExtension.')
-  .option(
-    '-l, --list-versions',
-    'Show available versions.',
-    {
-      action: printListVersions,
-    },
-  )
-  .option(
-    '-v, --version <version:version>',
-    'The version to upgrade to.',
-    { default: 'latest' },
-  )
-  .option(
-    '-n --name <name:string>',
-    'Executable file name',
-    { default: 'unwebext' },
-  )
-  .option(
-    '-f, --force',
-    'Replace current installation even if not out-of-date.',
-  )
-  .action(upgradeTo);
