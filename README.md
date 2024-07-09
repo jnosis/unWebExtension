@@ -90,6 +90,7 @@ unwebext upgrade --no-spinner
 
 ## ChangeLog
 
+- 1.1.1: Replace upgrade command to native @cliffy/command
 - 1.1.0: Add upgrade command
 - 1.0.1: Add changelog.ts template
 - 1.0.0: Publish to [jsr.io](https://jsr.io/@unface/unwebext)
