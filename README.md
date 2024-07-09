@@ -27,7 +27,7 @@ unwebext --help
 deno run --allow-read --allow-write -r jsr:@unface/unwebext [YOUR COMMAND AND OPTIONS]
 ```
 
-Create project:
+###### Create project:
 
 ```
 # Showing help.
@@ -58,7 +58,7 @@ unwebext create -d <directory:file> [extensionName:string]
 unwebext create --directory=<directory:file> [extensionName:string]
 ```
 
-Upgrade unWebExtension:
+###### Upgrade unWebExtension:
 
 ```
 # Showing help.
@@ -76,13 +76,16 @@ unwebext upgrade
 unwebext upgrade -v <version:version>
 unwebext upgrade --version <version:version>
 
-# Upgrading with setting name. (default: 'unwebext')
-unwebext upgrade -n <name:string>
-unwebext upgrade --name <name:string>
-
-# Upgrading even if not out-of-date
+# Replacing current installation even if not out-of-date
 unwebext upgrade -f
 unwebext upgrade --force
+
+# Logging verbose output
+unwebext -v
+unwebext --verbose
+
+# Disable spinner.
+unwebext upgrade --no-spinner
 ```
 
 ## ChangeLog
