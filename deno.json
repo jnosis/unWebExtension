@@ -17,5 +17,6 @@
     "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.4",
     "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.4",
     "@std/path": "jsr:@std/path@0.221"
-  }
+  },
+  "lock": false
 }
