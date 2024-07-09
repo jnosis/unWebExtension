@@ -13,9 +13,9 @@
     "install": "deno install --allow-read --allow-write --allow-net=jsr.io,storage.googleapis.com,blog.mozilla.org,raw.githubusercontent.com --name=unwebext ./src/main.ts"
   },
   "imports": {
-    "@cliffy/ansi": "jsr:@cliffy/ansi@1.0.0-rc.4",
-    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.4",
-    "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.4",
+    "@cliffy/ansi": "jsr:@cliffy/ansi@1.0.0-rc.5",
+    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.5",
+    "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.5",
     "@std/path": "jsr:@std/path@0.221"
   },
   "lock": false
